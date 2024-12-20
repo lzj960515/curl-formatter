@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curl Command Formatter | Format and Convert Curl Commands Online</title>
+  <meta name="description"
+    content="Free online tool to format and convert curl commands. Make your curl commands readable and clean. Perfect for API testing and HTTP requests.">
+  <meta name="keywords"
+    content="curl formatter, curl command, curl converter, command line tool, http request, api testing, curl beautifier, curl parser">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://curl-formatter.pages.dev" />
+
+  <!-- 结构化数据 -->
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebApplication",
+      "name": "Curl Command Formatter",
+      "description": "Format and convert curl commands online",
+      "url": "https://curl-formatter.pages.dev",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All"
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      background: linear-gradient(135deg, #006064, #0D47A1, #1A237E);
+      min-height: 100vh;
+      color: #B2EBF2;
+      line-height: 1.6;
+    }
+
+    .container {
+      background-color: rgba(13, 71, 161, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 2rem;
+      font-size: 2.2rem;
+      background: linear-gradient(45deg, #80DEEA, #90CAF9, #9FA8DA);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group,
+    .output-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #B2EBF2;
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      resize: vertical;
+      background: rgba(0, 0, 0, 0.2);
+      color: #E0F7FA;
+      transition: all 0.2s ease;
+    }
+
+    textarea:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #4DD0E1;
+      box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.2);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    button {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background: #00ACC1;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.3px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      background: #26C6DA;
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .format-btn {
+      background: linear-gradient(45deg, #00ACC1, #1E88E5);
+      padding: 0.7rem 2rem;
+    }
+
+    .copy-btn {
+      background: linear-gradient(45deg, #1E88E5, #3949AB);
+    }
+
+    .clear-btn {
+      background: linear-gradient(45deg, #3949AB, #00ACC1);
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(45deg, #00ACC1, #1E88E5);
+      color: white;
+      border-radius: 6px;
+      display: none;
+      animation: fadeIn 0.3s, fadeOut 0.3s 1.7s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* 滚动条样式 */
+    textarea::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+      background: #00ACC1;
+      border-radius: 5px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+      background: #26C6DA;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      button {
+        padding: 0.6rem 1.2rem;
+      }
+    }
+
+    /* Header & Nav */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0, 96, 100, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 1rem 2rem;
+      margin: -2rem -1.5rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #E0F7FA;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #B2EBF2;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #E0F7FA;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #4DD0E1, transparent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .github-link svg {
+      transition: transform 0.2s ease;
+    }
+
+    .github-link:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #B2EBF2;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 4rem 1rem;
+      background: rgba(13, 71, 161, 0.1);
+      backdrop-filter: blur(10px);
+      margin: 4rem -1.5rem;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      background: linear-gradient(45deg, #80DEEA, #90CAF9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card h3 {
+      color: #E0F7FA;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .feature-card p {
+      color: #B2EBF2;
+      font-size: 0.95rem;
+    }
+
+    /* How It Works Section */
+    .how-it-works {
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    .how-it-works h2 {
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      background: linear-gradient(45deg, #80DEEA, #90CAF9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 250px;
+      max-width: 300px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(45deg, #00ACC1, #1E88E5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .step h3 {
+      color: #E0F7FA;
+      margin-bottom: 0.8rem;
+    }
+
+    .step p {
+      color: #B2EBF2;
+      font-size: 0.95rem;
+    }
+
+    /* FAQ Section */
+    .faq {
+      padding: 4rem 1rem;
+      background: rgba(13, 71, 161, 0.1);
+      backdrop-filter: blur(10px);
+      margin: 4rem -1.5rem;
+    }
+
+    .faq h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      background: linear-gradient(45deg, #80DEEA, #90CAF9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .faq-grid {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    details {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    details[open] {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 0.5rem;
+      color: #E0F7FA;
+      font-weight: 500;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::before {
+      content: '+';
+      margin-right: 1rem;
+      color: #4DD0E1;
+    }
+
+    details[open] summary::before {
+      content: '-';
+    }
+
+    details p {
+      margin: 1rem;
+      color: #B2EBF2;
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    .footer {
+      margin: 4rem -1.5rem -2rem;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .footer-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left p {
+      color: #B2EBF2;
+      font-size: 0.9rem;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-right a {
+      color: #B2EBF2;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-right a:hover {
+      color: #E0F7FA;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-right {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="logo">
+        <span>Curl Formatter</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/lzj960515/curl-formatter" target="_blank" class="github-link">
+          <svg height="24" viewBox="0 0 16 16" width="24">
+            <path fill="currentColor"
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+            </path>
+          </svg>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Format Curl Commands with Ease</h1>
+    <p>Transform messy curl commands into clean, readable format. Perfect for API testing and documentation.</p>
+  </section>
+
+  <main class="container">
+    <div class="input-group">
+      <label for="input">Input Curl Command:</label>
+      <textarea id="input" placeholder="Paste your curl command here..."></textarea>
+    </div>
+
+    <div class="button-group">
+      <button class="format-btn" onclick="formatCurl()">Format</button>
+      <button class="clear-btn" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div class="output-group">
+      <label for="output">Formatted Result:</label>
+      <textarea id="output" readonly></textarea>
+    </div>
+
+    <div class="button-group">
+      <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+    </div>
+  </main>
+
+  <section id="features" class="features">
+    <h2>Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>Clean Formatting</h3>
+        <p>Automatically formats and beautifies curl commands</p>
+      </div>
+      <div class="feature-card">
+        <h3>Quote Handling</h3>
+        <p>Smart handling of single and double quotes</p>
+      </div>
+      <div class="feature-card">
+        <h3>Keyboard Shortcuts</h3>
+        <p>Format with Cmd/Ctrl + Enter</p>
+      </div>
+      <div class="feature-card">
+        <h3>Copy to Clipboard</h3>
+        <p>One-click copy of formatted commands</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Paste Command</h3>
+        <p>Paste your curl command into the input box</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Format</h3>
+        <p>Click format or use Cmd/Ctrl + Enter</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Copy Result</h3>
+        <p>Copy the formatted command to clipboard</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-grid">
+      <details>
+        <summary>What does this tool do?</summary>
+        <p>This tool helps format curl commands by cleaning up line breaks, handling quotes properly, and making the
+          command more readable.</p>
+      </details>
+      <details>
+        <summary>Is it safe to use with sensitive data?</summary>
+        <p>Yes, all processing is done locally in your browser. No data is sent to any server.</p>
+      </details>
+      <details>
+        <summary>Can I use keyboard shortcuts?</summary>
+        <p>Yes, you can use Cmd/Ctrl + Enter to format the command quickly.</p>
+      </details>
+      <details>
+        <summary>Is this tool free to use?</summary>
+        <p>Yes, this tool is completely free and open source.</p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p>© 2024 Curl Formatter. All rights reserved.</p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/your-repo" target="_blank">GitHub</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="notification" class="notification">Copied to clipboard!</div>
+
+  <script>
+    function formatCurl() {
+      let curl = document.getElementById('input').value;
+
+      // 移除多余的空白字符和换行
+      curl = curl.replace(/\s+\\/g, ' ')
+        .replace(/\n/g, ' ')
+        // 移除开头的curl命令(如果有)
+        .replace(/^curl\s+/, '')
+        // 移除多余的空格
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      // 处理引号
+      curl = curl.replace(/['"]/g, function (match) {
+        // 如果是作为header值的边界，转换为单引号
+        return '\'';
+      });
+
+      // 处理内部的单引号（比如在cookie值中的单引号）
+      curl = curl.replace(/-H '([^']+)'/g, function (match, content) {
+        // 转义内容中的单引号
+        const escapedContent = content.replace(/'/g, '\\\'');
+        return `-H '${escapedContent}'`;
+      });
+
+      document.getElementById('output').value = curl;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById('output');
+      output.select();
+      document.execCommand('copy');
+
+      // 显示通知
+      const notification = document.getElementById('notification');
+      notification.style.display = 'block';
+
+      // 2秒后隐藏通知
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 2000);
+    }
+
+    function clearAll() {
+      document.getElementById('input').value = '';
+      document.getElementById('output').value = '';
+    }
+
+    // 支持 Command/Ctrl + Enter 快捷键格式化
+    document.getElementById('input').addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
+        formatCurl();
+      }
+    });
+  </script>
+</body>
+
+</html>
